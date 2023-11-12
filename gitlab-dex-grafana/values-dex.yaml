@@ -1,0 +1,44 @@
+config:
+  staticClients:
+    - id: prometheus
+      redirectURIs:
+        - http://localhost:32001/login/generic_oauth
+      secret: ZGV4LWV4YW1wbGUK
+      name: 'prometheus'
+  issuer: http://localhost:32000/dex
+  storage:
+    type: sqlite3
+  web:
+    http: 0.0.0.0:5556
+  connectors:
+  - type: gitlab
+    # Required field for connector id.
+    id: gitlab
+      # Required field for connector name.
+    name: GitLab
+    config:
+      # optional, default = https://gitlab.com
+      baseURL: https://gitlab.com
+      # Credentials can be string literals or pulled from the environment.
+      clientID:
+      clientSecret:
+      redirectURI: http://localhost:32000/dex/callback
+      # Optional groups whitelist, communicated through the "groups" scope.
+      # If `groups` is omitted, all of the user's GitLab groups are returned when the groups scope is present.
+      # If `groups` is provided, this acts as a whitelist - only the user's GitLab groups that are in the configured `groups` below will go into the groups claim.  Conversely, if the user is not in any of the configured `groups`, the user will not be authenticated.
+      groups:
+      - example-dex 
+      # flag which will switch from using the internal GitLab id to the users handle (@mention) as the user id.
+      # It is possible for a user to change their own user name but it is very rare for them to do so
+      useLoginAsID: false
+
+service:
+  # -- Annotations to be added to the service.
+  annotations: {}
+  # -- Kubernetes [service type](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types).
+  type: NodePort
+  ports:
+    http:
+      port: 5556
+      nodePort: 32000
+

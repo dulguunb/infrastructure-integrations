@@ -1,0 +1,19 @@
+grafana.ini:
+  server:
+    protocol: http
+    root_url: http://localhost:32001
+  auth.generic_oauth:
+    enabled: true
+    name: OAuth
+    tls_skip_verify_insecure: true
+    client_id: prometheus
+    client_secret: ZGV4LWV4YW1wbGUK
+    scopes: "openid profile email groups"
+    auth_url: http://localhost:32000/dex/auth
+    token_url: http://dex:5556/dex/token
+    api_url: http://localhost:32000/dex/userinfo
+service:
+  enabled: true
+  type: NodePort
+  nodePort: 32001
+
